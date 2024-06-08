@@ -11,7 +11,7 @@ const persistConfig = {
   version: 1,
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer); // keep the user logged in even after page refresh
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -21,4 +21,4 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store); // keep the store presist

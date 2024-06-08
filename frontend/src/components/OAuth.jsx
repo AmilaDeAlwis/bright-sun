@@ -10,11 +10,11 @@ export default function OAuth() {
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      const auth = getAuth(app);
+      const auth = getAuth(app); // from firebase.js
 
-      const result = await signInWithPopup(auth, provider);
-
-      const res = await fetch('/api/auth/google', {
+      const result = await signInWithPopup(auth, provider); // wait until the google signin/signup pop up come 
+      
+      const res = await fetch('/backend/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -24,9 +24,11 @@ export default function OAuth() {
           email: result.user.email,
           photo: result.user.photoURL,
         }),
+        
       });
+      
       const data = await res.json();
-      dispatch(signInSuccess(data));
+      dispatch(signInSuccess(data)); // from redux
       navigate('/');
     } catch (error) {
       console.log('could not sign in with google', error);
@@ -35,8 +37,8 @@ export default function OAuth() {
   return (
     <button
       onClick={handleGoogleClick}
-      type='button'
-      className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95'
+      type='button' // make the default action as a button instead of submit
+      className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-80'
     >
       Continue with google
     </button>

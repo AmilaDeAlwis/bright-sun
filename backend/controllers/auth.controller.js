@@ -4,9 +4,9 @@ import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, firstname, lastname, email, password } = req.body;
   const hashedPassword = bcryptjs.hashSync(password, 10);
-  const newUser = new User({ username, email, password: hashedPassword });
+  const newUser = new User({ username, firstname, lastname, email, password: hashedPassword });
   try {
     await newUser.save();
     res.status(201).json('User created successfully!');
@@ -23,11 +23,11 @@ export const signin = async (req, res, next) => {
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) return next(errorHandler(401, 'Wrong credentials!'));
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-    const { password: pass, ...rest } = validUser._doc;
+    const { password: pass, ...rest } = validUser._doc; // we don't need the password back. So we break the password and only get the rest of the information. Finally destructure the _doc
     res
       .cookie('access_token', token, { httpOnly: true })
       .status(200)
-      .json(rest);
+      .json(rest); // only get the rest. Don't get the whole validUser data.
   } catch (error) {
     next(error);
   }

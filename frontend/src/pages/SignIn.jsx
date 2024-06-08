@@ -10,7 +10,7 @@ import OAuth from '../components/OAuth';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user); // using useSelector hook to observe the user's state
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -23,7 +23,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch('/api/auth/signin', {
+      const res = await fetch('/backend/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,6 +68,7 @@ export default function SignIn() {
           {loading ? 'Loading...' : 'Sign In'}
         </button>
         <OAuth/>
+        {error && <p className='text-2xl text-center text-red-500 font-bold'>***{error}***</p>}
       </form>
       <div className='flex gap-2 mt-5'>
         <p>Dont have an account?</p>
@@ -75,7 +76,6 @@ export default function SignIn() {
           <span className='text-blue-700'>Sign up</span>
         </Link>
       </div>
-      {error && <p className='text-red-500 mt-5'>{error}</p>}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   currentUser: null,
   error: null,
-  loading: false,
+  loading: false, // add initial state before sign in or sign up
 };
 
 const userSlice = createSlice({
